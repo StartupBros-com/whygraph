@@ -31,7 +31,9 @@ def _rows(cur):
 
 class WhyGraph:
     def __init__(self, store: str = None, db=None):
-        self.db = db if db is not None else relate.connect(store)
+        # A store on disk is only ever read here: open it read-only so queries and the MCP server never
+        # checkpoint or rewrite it (a committed store stays byte-identical after use).
+        self.db = db if db is not None else relate.connect(store, read_only=True)
         self._cite_counts = None
 
     def close(self):
