@@ -33,7 +33,7 @@ Claude Code (Anthropic; Claude models) did this work under the entrant's standin
 
 **IP note:** entering grants Neo4j a non-exclusive licence to the submitted material; the code is Apache-2.0 anyway.
 
-**Demo:** `demo/whygraph-demo-draft.mp4`, 84 s, silent screen slideshow (title, `why`, `search`, `decision`, MCP call, eval). It must be uploaded to YouTube/Vimeo as public or unlisted with no login (rules: "your own work", accessible without login). Re-record with voiceover if you want to; the shot list is `demo/demo.sh` plus `docs/screenshots/`. Screenshots: `docs/screenshots/0_title.png` to `5_eval.png`.
+**Demo:** https://youtu.be/HeGUeetA998 (1:32). Six terminal screens with a synthetic voice (Piper TTS, en_US-joe-medium): title, `why`, a real Claude Code session calling `why_file` over MCP, `search`, `decision`, and the eval. Rebuild it with `demo/render_screens.py` and `demo/make_video.py` from `demo/narration.json` and the `.txt` sources in `docs/screenshots/`; the builder refuses to write a video over the 2-minute limit. The screen texts are real command output, and the MCP screen is an excerpt of the Claude Code transcript.
 
 **Setup instructions (paste):**
 ```
