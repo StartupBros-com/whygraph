@@ -1,0 +1,8 @@
+[
+  {"scene": "0_title", "text": "whygraph. Before a coding agent edits a file, it should know why the file is the way it is. whygraph builds that answer as a graph, inside an embedded Relate database, and serves it to agents over MCP."},
+  {"scene": "1_why", "text": "This is the open-source Relate repository: 483 commits and 566 decision records, indexed in about six seconds. One call, why, on the plan cache. It lists the decisions that govern the file, with the evidence for each: cited in the file, cited by commits that touched it, or cited by files that change with it. Then who to ask, and what usually changes alongside."},
+  {"scene": "2_mcp", "text": "This is a real Claude Code session. One command adds whygraph as an MCP server. Claude calls why file, reads the evidence and the status, and names the accepted decision the file actually cites, even though a proposed one scores slightly higher. The graph supplies the evidence. The agent makes the call."},
+  {"scene": "3_search", "text": "Agents can also search decisions by text, through Relate's full-text index."},
+  {"scene": "4_decision", "text": "Or open one decision, to see what supersedes it, what references it, and where it is cited in the code."},
+  {"scene": "5_eval", "text": "Does it help? We replayed later commits against a graph built from earlier ones. Graph traversal found the governing decision in ten of twelve cases, against four for text search, on a small sample. Mixing history with folder and file names predicted co-changes best, and for who to ask, the top committer is hard to beat. The full eval is in the repo."}
+]

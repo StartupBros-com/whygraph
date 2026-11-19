@@ -1,0 +1,5 @@
+$ whygraph search "plan cache invalidation"
+ADR-0503 [Proposed] Template-keyed plan cache with stats-generation replanning (7.421)
+ADR-0381 [Proposed] The agent-native plan schema (`cypherlite.plan/v1`) (4.079)
+ADR-0540 [Proposed] Fine phase split, plan-cache outcome, and machine-envelope timing keys (3.659)
+ADR-0359 [Proposed] One plan renderer — text is rendered at the boundary, never in the engine (3.639)

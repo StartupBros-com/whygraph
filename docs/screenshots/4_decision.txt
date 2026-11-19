@@ -1,0 +1,7 @@
+$ whygraph decision 345
+ADR-0345 [Accepted] Plan surface alignment — CLI text rendering, Bolt and HTTP passthrough  [superseded by ADR-0359]
+
+1. CLI: `EXPLAIN`/`PROFILE` print the Neo4j-compatible fixed-width ASCII tree — columns `Operator | Id | Details | Estimated Rows | Rows | DB Hits | Memory (Bytes)`, tree glyphs `+`/`| |`/`|\`, and the footer totals line — omitting the Page
+Later changed by: superseded by ADR-0359
+Referenced by: ADR-0344, ADR-0353, ADR-0357, ADR-0486
+Cited in code under: relate/relate (5), surfaces/relate-formatter (4), surfaces/relate-http (2), relate/relate-model (2), surfaces/relate-cli (1), docs/api (1)

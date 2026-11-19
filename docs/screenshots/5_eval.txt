@@ -1,0 +1,10 @@
+$ python eval/run_eval.py --repo relate --rev 2346dec599     # temporal holdout: build on the first 70% of commits, replay the rest
+
+task                                   graph    best simple baseline          verdict
+decision hit@5 (12 replayed commits)   0.833    subject full text 0.333       graph wins; tiny sample (7 / 12 / 3 tasks at 50/70/85%)
+coupling hit@10, history+folder+name   0.694    file-name overlap 0.645       highest at every split; 95% intervals overlap
+coupling hit@10, history alone         0.556    file-name overlap 0.645       loses
+owner top-1 (1189 queries)             0.637    top committer overall 0.732   loses: one author dominates this repository
+owner top-3                            0.787    last 3 distinct authors 0.786 tie
+
+No LLM in the loop. Full tables, intervals, protocol and the changes made after seeing results: eval/README.md

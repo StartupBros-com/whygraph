@@ -1,0 +1,11 @@
+whygraph
+
+Ask "why is this file the way it is?" before a coding agent edits it.
+
+A decision graph (people, commits, files, ADRs) built from git history,
+stored in an embedded Relate database, served to agents over MCP.
+
+  pip install .   ·   whygraph index --repo <repo>   ·   whygraph why <file>   ·   whygraph mcp
+
+Demo data: the public relatedb/relate repository at 2346dec599 (Apache-2.0), author names anonymized.
+Narration: synthetic voice (Piper TTS, en_US-joe-medium).

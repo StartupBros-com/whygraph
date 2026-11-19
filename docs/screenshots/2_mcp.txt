@@ -1,0 +1,22 @@
+$ claude mcp add --scope project whygraph -- whygraph --store relate.rl mcp
+Added stdio MCP server whygraph with command: whygraph --store relate.rl mcp to project config
+
+$ claude -p --mcp-config .mcp.json --allowedTools mcp__whygraph__why_file "<prompt>"
+  prompt: I am about to edit relate/relate/src/plan_cache.rs. Call the whygraph why_file tool on that path, then
+  tell me in at most three short sentences which decision governs the file, what the evidence is, and who to
+  ask.
+
+Claude Code 2.1.328  ·  MCP servers: whygraph (connected)
+tool call: mcp__whygraph__why_file {"path": "relate/relate/src/plan_cache.rs"}
+tool result (decisions, best first):
+  ADR-0540 [Proposed] Fine phase split, plan-cache outcome, and machine-envelope timing keys  score 2.511  basis: cited by a commit that touched the file
+  ADR-0541 [Accepted] Resolve label, relationship-type and property-key names to token ids o  score 2.251  basis: cited in the file
+  ADR-0503 [Proposed] Template-keyed plan cache with stats-generation replanning  score 1.287  basis: cited in the file
+
+Claude's answer:
+  ADR-0541 ("Resolve label, relationship-type and property-key names to token ids once per plan", Accepted)
+  governs this file. The file cites it directly, commit `32abb09` (#87) that touched the file implemented it,
+  and 22 files that usually change with it also cite it; ADR-0540 (timing keys) ranks slightly higher by score,
+  but it is only Proposed and only a commit cites it, and ADR-0503 (the plan-cache design) is also only
+  Proposed. Ask `person-ec428d`, who wrote 4 of the file's 5 commits, the latest being #399; whygraph hides real
+  names, so you'll need to map that ID to a person yourself.

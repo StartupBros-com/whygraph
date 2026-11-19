@@ -1,0 +1,31 @@
+$ whygraph why relate/relate/src/plan_cache.rs
+relate/relate/src/plan_cache.rs
+
+Decisions that govern it (highest evidence score first):
+  ADR-0540 [Proposed] Fine phase split, plan-cache outcome, and machine-envelope timing keys (2.511)
+      because: 1 commit(s) touching relate/relate/src/plan_cache.rs cite it
+      because: 3 file(s) that change with relate/relate/src/plan_cache.rs cite it
+  ADR-0541 [Accepted] Resolve label, relationship-type and property-key names to token ids once per plan (2.251)
+      because: cited in relate/relate/src/plan_cache.rs
+      because: 1 commit(s) touching relate/relate/src/plan_cache.rs cite it
+  ADR-0503 [Proposed] Template-keyed plan cache with stats-generation replanning (1.287)
+      because: cited in relate/relate/src/plan_cache.rs
+      because: 28 file(s) that change with relate/relate/src/plan_cache.rs cite it
+  ADR-0379 [Accepted] Hybrid search `COMBINE` behind the `hybrid-search` gate (0.932)
+      because: 3 file(s) that change with relate/relate/src/plan_cache.rs cite it
+
+Who to ask (recency-weighted):
+  person-ec428d: 4 commits, last 2026-11-14 (file level)
+  person-ebe3d0: 1 commits, last 2026-11-06 (file level)
+
+Changes together with:
+  relate/relate/src/commit.rs  (2 shared commits; same folder; similar name)
+  relate/relate/src/plan_bytes.rs  (same folder; similar name)
+  relate/relate/src/lib.rs  (same folder; similar name)
+  relate/relate/src/binding.rs  (same folder; similar name)
+
+Recent commits:
+  8a0f990b 2026-11-14 person-ec428d: refactor(front): scope-policy, timing-carrier and reads.rs consolidations (LABS-816, LABS-
+  cc3250ac 2026-11-13 person-ec428d: refactor(relate): connection read arm, bounded-sink refusal accessor, admit_slot timestamp
+  32abb091 2026-11-09 person-ec428d: perf(planner,executor): resolve names to token ids once per plan (ADR-0541) (#87)
+  e26f021c 2026-11-08 person-ec428d: feat(observability): fine phase split and plan-cache outcome in every machine envelope (AD

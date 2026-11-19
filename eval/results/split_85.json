@@ -1,0 +1,404 @@
+{
+ "repo_rev": "2346dec59924eb730a5041d15bcfbcbf06d5de79",
+ "split": 0.85,
+ "cutoff_commit": "9885d087f904db50a801dab59edd96088654067b",
+ "past_commits": 410,
+ "future_commits": 73,
+ "graph": {
+  "rev": "9885d087f904db50a801dab59edd96088654067b",
+  "commits": 410,
+  "people": 8,
+  "files": 4075,
+  "decisions": 554,
+  "file_cites": 6676
+ },
+ "coupling": {
+  "queries": 401,
+  "graph_coverage": 0.998,
+  "methods": [
+   {
+    "method": "graph",
+    "n": 401,
+    "hit@10": 0.581,
+    "hit@10_ci": [
+     0.531,
+     0.628
+    ],
+    "recall@10": 0.164,
+    "recall@10_ci": [
+     0.145,
+     0.182
+    ],
+    "mrr": 0.325,
+    "mrr_ci": [
+     0.287,
+     0.365
+    ]
+   },
+   {
+    "method": "graph_count_only",
+    "n": 401,
+    "hit@10": 0.581,
+    "hit@10_ci": [
+     0.531,
+     0.628
+    ],
+    "recall@10": 0.164,
+    "recall@10_ci": [
+     0.145,
+     0.182
+    ],
+    "mrr": 0.326,
+    "mrr_ci": [
+     0.291,
+     0.365
+    ]
+   },
+   {
+    "method": "graph_then_samedir",
+    "n": 401,
+    "hit@10": 0.584,
+    "hit@10_ci": [
+     0.534,
+     0.631
+    ],
+    "recall@10": 0.167,
+    "recall@10_ci": [
+     0.148,
+     0.186
+    ],
+    "mrr": 0.327,
+    "mrr_ci": [
+     0.291,
+     0.366
+    ]
+   },
+   {
+    "method": "graph+name+samedir_rrf",
+    "n": 401,
+    "hit@10": 0.736,
+    "hit@10_ci": [
+     0.693,
+     0.778
+    ],
+    "recall@10": 0.199,
+    "recall@10_ci": [
+     0.181,
+     0.218
+    ],
+    "mrr": 0.438,
+    "mrr_ci": [
+     0.4,
+     0.478
+    ]
+   },
+   {
+    "method": "same_dir",
+    "n": 401,
+    "hit@10": 0.576,
+    "hit@10_ci": [
+     0.529,
+     0.623
+    ],
+    "recall@10": 0.15,
+    "recall@10_ci": [
+     0.134,
+     0.167
+    ],
+    "mrr": 0.391,
+    "mrr_ci": [
+     0.35,
+     0.433
+    ]
+   },
+   {
+    "method": "name_overlap",
+    "n": 401,
+    "hit@10": 0.653,
+    "hit@10_ci": [
+     0.606,
+     0.701
+    ],
+    "recall@10": 0.162,
+    "recall@10_ci": [
+     0.145,
+     0.179
+    ],
+    "mrr": 0.395,
+    "mrr_ci": [
+     0.356,
+     0.436
+    ]
+   },
+   {
+    "method": "popular",
+    "n": 401,
+    "hit@10": 0.379,
+    "hit@10_ci": [
+     0.334,
+     0.426
+    ],
+    "recall@10": 0.053,
+    "recall@10_ci": [
+     0.045,
+     0.062
+    ],
+    "mrr": 0.12,
+    "mrr_ci": [
+     0.099,
+     0.143
+    ]
+   }
+  ]
+ },
+ "owner": {
+  "queries": 633,
+  "all": [
+   {
+    "method": "graph",
+    "n": 633,
+    "top1": 0.717,
+    "top1_ci": [
+     0.682,
+     0.752
+    ],
+    "top3": 0.85,
+    "top3_ci": [
+     0.821,
+     0.877
+    ]
+   },
+   {
+    "method": "last_author",
+    "n": 633,
+    "top1": 0.664,
+    "top1_ci": [
+     0.627,
+     0.701
+    ],
+    "top3": 0.664,
+    "top3_ci": [
+     0.627,
+     0.701
+    ]
+   },
+   {
+    "method": "last3_distinct_authors",
+    "n": 633,
+    "top1": 0.664,
+    "top1_ci": [
+     0.627,
+     0.701
+    ],
+    "top3": 0.852,
+    "top3_ci": [
+     0.823,
+     0.878
+    ]
+   },
+   {
+    "method": "graph_recent3",
+    "n": 633,
+    "top1": 0.664,
+    "top1_ci": [
+     0.627,
+     0.701
+    ],
+    "top3": 0.852,
+    "top3_ci": [
+     0.823,
+     0.878
+    ]
+   },
+   {
+    "method": "top_committer_overall",
+    "n": 633,
+    "top1": 0.659,
+    "top1_ci": [
+     0.622,
+     0.695
+    ],
+    "top3": 0.659,
+    "top3_ci": [
+     0.622,
+     0.695
+    ]
+   }
+  ],
+  "excluding_top_author": {
+   "queries": 216,
+   "methods": [
+    {
+     "method": "graph",
+     "n": 216,
+     "top1": 0.593,
+     "top1_ci": [
+      0.523,
+      0.662
+     ],
+     "top3": 0.856,
+     "top3_ci": [
+      0.81,
+      0.903
+     ]
+    },
+    {
+     "method": "last_author",
+     "n": 216,
+     "top1": 0.417,
+     "top1_ci": [
+      0.347,
+      0.481
+     ],
+     "top3": 0.417,
+     "top3_ci": [
+      0.347,
+      0.481
+     ]
+    },
+    {
+     "method": "last3_distinct_authors",
+     "n": 216,
+     "top1": 0.417,
+     "top1_ci": [
+      0.347,
+      0.481
+     ],
+     "top3": 0.866,
+     "top3_ci": [
+      0.819,
+      0.907
+     ]
+    },
+    {
+     "method": "graph_recent3",
+     "n": 216,
+     "top1": 0.417,
+     "top1_ci": [
+      0.347,
+      0.481
+     ],
+     "top3": 0.866,
+     "top3_ci": [
+      0.819,
+      0.907
+     ]
+    },
+    {
+     "method": "top_committer_overall",
+     "n": 216,
+     "top1": 0.0,
+     "top1_ci": [
+      0.0,
+      0.0
+     ],
+     "top3": 0.0,
+     "top3_ci": [
+      0.0,
+      0.0
+     ]
+    }
+   ]
+  }
+ },
+ "decision": {
+  "tasks": 3,
+  "methods": [
+   {
+    "method": "graph",
+    "n": 3,
+    "hit@5": 0.667,
+    "hit@5_ci": [
+     0.0,
+     1.0
+    ],
+    "recall@5": 0.667,
+    "recall@5_ci": [
+     0.0,
+     1.0
+    ],
+    "mrr": 0.5,
+    "mrr_ci": [
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "method": "fulltext_on_subject",
+    "n": 3,
+    "hit@5": 1.0,
+    "hit@5_ci": [
+     1.0,
+     1.0
+    ],
+    "recall@5": 1.0,
+    "recall@5_ci": [
+     1.0,
+     1.0
+    ],
+    "mrr": 0.511,
+    "mrr_ci": [
+     0.2,
+     1.0
+    ]
+   },
+   {
+    "method": "graph+fulltext_rrf",
+    "n": 3,
+    "hit@5": 0.667,
+    "hit@5_ci": [
+     0.0,
+     1.0
+    ],
+    "recall@5": 0.667,
+    "recall@5_ci": [
+     0.0,
+     1.0
+    ],
+    "mrr": 0.667,
+    "mrr_ci": [
+     0.0,
+     1.0
+    ]
+   },
+   {
+    "method": "grep_adr_text",
+    "n": 3,
+    "hit@5": 0.0,
+    "hit@5_ci": [
+     0.0,
+     0.0
+    ],
+    "recall@5": 0.0,
+    "recall@5_ci": [
+     0.0,
+     0.0
+    ],
+    "mrr": 0.0,
+    "mrr_ci": [
+     0.0,
+     0.0
+    ]
+   },
+   {
+    "method": "most_cited_overall",
+    "n": 3,
+    "hit@5": 0.0,
+    "hit@5_ci": [
+     0.0,
+     0.0
+    ],
+    "recall@5": 0.0,
+    "recall@5_ci": [
+     0.0,
+     0.0
+    ],
+    "mrr": 0.0,
+    "mrr_ci": [
+     0.0,
+     0.0
+    ]
+   }
+  ]
+ }
+}
