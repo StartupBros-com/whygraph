@@ -10,6 +10,39 @@ Demo video (1:32): https://youtu.be/HeGUeetA998
 
 ![why](docs/screenshots/1_why.png)
 
+## Use case
+
+A coding agent about to edit a file cannot see why the file is the way it is. The reasons sit in architecture
+decision records, in commit messages and in the people who wrote the code, so the agent re-opens settled
+decisions and misses the file that always changes with this one. The relationships that matter are
+person → commit → file, commit or file → the decision it cites, and decision → the decision that amends or
+supersedes it.
+
+## How it uses Relate
+
+- **Mode: single file.** `whygraph index` writes one `.rl` file; every query, the CLI and the MCP server open it
+  in-process with `relate.connect(path)`. The eval is the exception: it builds about 20 throwaway graphs with
+  `relate.connect(":memory:")`, one per holdout cutoff and per test.
+- **Why this mode:** a decision graph belongs next to the repository it describes. One file can be committed,
+  copied to another machine, handed to any MCP client, opened by a judge, and deleted when stale; an index is
+  rebuilt, never merged. No server process means nothing to start before an agent asks its first question.
+- **What the graph models:** people, commits, files and decisions, with the edges below.
+
+## Where the data lives
+
+[`data/relate.rl`](data/relate.rl) (3.6 MB) is a persistent store you can open without building anything: the
+public [relatedb/relate](https://github.com/relatedb/relate) repository at commit `2346dec599`, 483 commits,
+566 ADRs, author names replaced with pseudonyms. After `pip install .`:
+
+```bash
+whygraph --store data/relate.rl why relate/relate/src/plan_cache.rs
+whygraph --store data/relate.rl search "plan cache invalidation"
+claude mcp add whygraph -- whygraph --store "$PWD/data/relate.rl" mcp
+```
+
+It was built with `whygraph index --repo <clone of relatedb/relate> --rev 2346dec59924eb730a5041d15bcfbcbf06d5de79
+--anonymize --store data/relate.rl`; `demo/demo.sh` rebuilds the same graph from scratch.
+
 ## Graph model
 
 ```
