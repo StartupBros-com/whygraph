@@ -21,7 +21,7 @@ supersedes it.
 ## How it uses Relate
 
 - **Mode: single file.** `whygraph index` writes one `.rl` file; every query, the CLI and the MCP server open it
-  in-process with `relate.connect(path)`. The eval is the exception: it builds about 20 throwaway graphs with
+  in-process with `relate.connect(path, read_only=True)`, so using the store never rewrites it. The eval is the exception: it builds about 20 throwaway graphs with
   `relate.connect(":memory:")`, one per holdout cutoff and per test.
 - **Why this mode:** a decision graph belongs next to the repository it describes. One file can be committed,
   copied to another machine, handed to any MCP client, opened by a judge, and deleted when stale; an index is
@@ -95,7 +95,7 @@ Checked with a real client on 2026-11-19: after `claude mcp add --scope project 
 ## Tests and eval
 
 ```bash
-pip install pytest && pytest -q           # 14 tests on synthetic git repositories
+pip install pytest && pytest -q           # 15 tests on synthetic git repositories
 python eval/run_eval.py --repo <clone of relatedb/relate> --rev 2346dec59924eb730a5041d15bcfbcbf06d5de79
 ```
 

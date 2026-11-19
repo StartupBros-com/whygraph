@@ -109,6 +109,18 @@ def test_decision_basis_names_strongest_evidence(wg):
     assert cache["ADR-0002"]["basis"] == "cited by a commit that touched the file"
 
 
+def test_queries_leave_the_store_untouched(repo, tmp_path):
+    import hashlib
+
+    store = tmp_path / "ro.rl"
+    build(repo, "HEAD", str(store))
+    before = hashlib.sha256(store.read_bytes()).hexdigest()
+    w = WhyGraph(str(store))
+    assert w.why("src/wal.rs")["decisions"][0]["id"] == "ADR-0001"
+    w.close()
+    assert hashlib.sha256(store.read_bytes()).hexdigest() == before
+
+
 def test_store_is_never_merged(repo, tmp_path):
     store = str(tmp_path / "s.rl")
     build(repo, "HEAD", store)
