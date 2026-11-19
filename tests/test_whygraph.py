@@ -6,7 +6,7 @@ import relate
 
 from whygraph import mcp
 from whygraph.build import build, parse_adr
-from whygraph.query import NotFound, WhyGraph
+from whygraph.query import NotFound, WhyGraph, clip
 
 
 @pytest.fixture()
@@ -107,6 +107,13 @@ def test_decision_basis_names_strongest_evidence(wg):
     assert wal[0]["id"] == "ADR-0001" and wal[0]["basis"] == "cited in the file"
     cache = {d["id"]: d for d in wg.why("src/cache.rs")["decisions"]}
     assert cache["ADR-0002"]["basis"] == "cited by a commit that touched the file"
+
+
+def test_clipped_summaries_are_marked():
+    long = "word " * 80
+    out = clip(long, 50)
+    assert out.endswith(" \u2026") and len(out) <= 52 and "wor \u2026" not in out
+    assert clip("short summary", 50) == "short summary"
 
 
 def test_queries_leave_the_store_untouched(repo, tmp_path):

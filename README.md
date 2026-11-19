@@ -6,7 +6,7 @@ the repository's own history: the architecture decisions (ADRs) that govern the 
 and the files that change with it. It runs in-process (no server, one `.rl` file) and speaks MCP, so Claude Code,
 Cursor or Codex can call it as a tool.
 
-Demo video (1:32): https://youtu.be/HeGUeetA998
+Demo video (1:38): https://youtu.be/EBa4CtHUoP4
 
 ![why](docs/screenshots/1_why.png)
 
