@@ -39,6 +39,7 @@ Claude Code (Anthropic; Claude models) did this work under the entrant's standin
 ```
 git clone https://github.com/StartupBros-com/whygraph && cd whygraph
 python3 -m venv .venv && . .venv/bin/activate && pip install .
+whygraph --store data/relate.rl why relate/relate/src/plan_cache.rs   # the committed store (data/relate.rl), no build needed
 demo/demo.sh          # clones relatedb/relate at a pinned commit, indexes it, runs three queries (~10 s)
 pip install pytest && pytest -q      # 14 passed
 claude mcp add whygraph -- whygraph --store "$PWD/whygraph.rl" mcp   # after: whygraph index --repo <your repo> --store whygraph.rl
