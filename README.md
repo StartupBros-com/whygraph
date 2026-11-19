@@ -95,7 +95,7 @@ Checked with a real client on 2026-11-19: after `claude mcp add --scope project 
 ## Tests and eval
 
 ```bash
-pip install pytest && pytest -q           # 15 tests on synthetic git repositories
+pip install pytest && pytest -q           # 16 tests on synthetic git repositories
 python eval/run_eval.py --repo <clone of relatedb/relate> --rev 2346dec59924eb730a5041d15bcfbcbf06d5de79
 ```
 

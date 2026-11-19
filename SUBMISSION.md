@@ -41,7 +41,7 @@ git clone https://github.com/StartupBros-com/whygraph && cd whygraph
 python3 -m venv .venv && . .venv/bin/activate && pip install .
 whygraph --store data/relate.rl why relate/relate/src/plan_cache.rs   # the committed store (data/relate.rl), no build needed
 demo/demo.sh          # clones relatedb/relate at a pinned commit, indexes it, runs three queries (~10 s)
-pip install pytest && pytest -q      # 15 passed
+pip install pytest && pytest -q      # 16 passed
 claude mcp add whygraph -- whygraph --store "$PWD/whygraph.rl" mcp   # after: whygraph index --repo <your repo> --store whygraph.rl
 ```
 Verified 2026-11-19 on a fresh clone of github.com/StartupBros-com/whygraph at abe22a6, with relate-db 1.1.0: 16 tests pass on Python 3.12.3 and 3.9.25; the `data/relate.rl` commands above run and leave the store byte-identical; `demo/demo.sh` rebuilds the graph from a clone of relatedb/relate and its `why` output matches the committed store line for line. MCP checked with a real client the same day: `claude mcp add --scope project whygraph -- whygraph --store "$PWD/data/relate.rl" mcp`, then Claude Code 2.1.328 in print mode reported the server connected, called `why_file` on `relate/relate/src/plan_cache.rs` and answered from the result. Earlier runs: Python 3.15.2 tests on 2026-11-18.
