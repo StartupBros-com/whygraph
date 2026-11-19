@@ -17,6 +17,17 @@ RRF_K = 60
 BASIS = ("cited in the file", "cited by a commit that touched the file", "cited by a file that changes with it")
 
 
+SUMMARY_CHARS = 240
+
+
+def clip(text: str, n: int = SUMMARY_CHARS) -> str:
+    """Shorten at a word boundary and mark the cut, so a clipped summary never reads as the whole decision."""
+    text = text or ""
+    if len(text) <= n:
+        return text
+    return text[:n].rsplit(" ", 1)[0].rstrip(" ,;:-\u2014") + " \u2026"
+
+
 def path_tokens(path: str) -> set:
     return {t for t in re.split(r"[^A-Za-z0-9]+", path.lower()) if len(t) > 2}
 
@@ -210,7 +221,7 @@ class WhyGraph:
             if did not in info:
                 continue
             row = dict(info[did])
-            row["summary"] = (row["summary"] or "")[:240]
+            row["summary"] = clip(row["summary"])
             row["updated_by"] = newer.get(did, [])
             if score is not None:
                 row["score"] = round(score[did], 3)
