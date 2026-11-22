@@ -30,6 +30,8 @@ supersedes it.
 
 ## Where the data lives
 
+The index preserves tracked UTF-8 paths exactly, including non-ASCII names. Git paths with invalid UTF-8 bytes are not indexed.
+
 [`data/relate.rl`](data/relate.rl) (3.6 MB) is a persistent store you can open without building anything: the
 public [relatedb/relate](https://github.com/relatedb/relate) repository at commit `2346dec599`, 483 commits,
 566 ADRs, author names replaced with pseudonyms. After `pip install .`:
