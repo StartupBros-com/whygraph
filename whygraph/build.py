@@ -37,6 +37,18 @@ def git(repo: str, *args: str) -> str:
     return out.stdout
 
 
+def _git_bytes(repo: str, *args: str, check: bool = True) -> bytes:
+    return subprocess.run(["git", "-C", repo, *args], check=check, capture_output=True).stdout
+
+
+def _path_text(raw: bytes) -> str | None:
+    """Relate file keys are UTF-8 text; do not alias undecodable paths."""
+    try:
+        return raw.decode("utf-8")
+    except UnicodeDecodeError:
+        return None
+
+
 def is_noise(path: str) -> bool:
     return path.endswith(NOISE_SUFFIXES)
 
@@ -76,15 +88,25 @@ class Decision:
 
 def read_commits(repo: str, rev: str) -> list:
     """Non-merge commits reachable from rev, oldest first. Author names only, never emails."""
-    fmt = "%x1e%H%x1f%an%x1f%at%x1f%s%x1f%b%x1f"
-    raw = git(repo, "log", "--no-merges", "--no-renames", "--name-only", f"--format={fmt}", rev)
+    # The leading empty NUL field marks the next header; Git adds a NUL
+    # record terminator and, when names follow, one LF before the first path.
+    fmt = "%x00%H%x00%an%x00%at%x00%s%x00%b%x00"
+    raw = _git_bytes(repo, "log", "--no-merges", "--no-renames", "--name-only", "-z", f"--format={fmt}", rev)
+    fields = iter(raw.split(b"\0"))
+    next(fields)
     commits = []
-    for rec in raw.split("\x1e"):
-        if not rec.strip():
-            continue
-        sha, author, ts, subject, body, tail = rec.split("\x1f", 5)
-        files = [f for f in tail.split("\n") if f.strip()]
-        commits.append(Commit(sha, author.strip(), int(ts), subject.strip(), body.strip(), files))
+    while sha := next(fields, b""):
+        author, ts, subject, body, _ = (next(fields) for _ in range(5))
+        files = []
+        for index, name in enumerate(iter(lambda: next(fields, b""), b"")):
+            path = _path_text(name.removeprefix(b"\n") if index == 0 else name)
+            if path is not None:
+                files.append(path)
+        author_text, subject_text, body_text = (
+            part.decode("utf-8", "replace").replace("\r\n", "\n").replace("\r", "\n").strip()
+            for part in (author, subject, body)
+        )
+        commits.append(Commit(sha.decode("ascii"), author_text, int(ts), subject_text, body_text, files))
     commits.reverse()
     return commits
 
@@ -123,10 +145,12 @@ def parse_adr(path: str, text: str):
 
 
 def read_decisions(repo: str, rev: str, adr_dir: str) -> dict:
-    names = [p for p in git(repo, "ls-tree", "-r", "--name-only", rev, "--", adr_dir).split("\n")
-             if p.endswith(".md")]
+    names = _git_bytes(repo, "ls-tree", "-r", "-z", "--name-only", rev, "--", adr_dir)
     out = {}
-    for p in names:
+    for name in names.split(b"\0"):
+        p = _path_text(name)
+        if p is None or not p.endswith(".md"):
+            continue
         d = parse_adr(p, git(repo, "show", f"{rev}:{p}"))
         if d:
             out[d.id] = d
@@ -140,18 +164,25 @@ def read_decisions(repo: str, rev: str, adr_dir: str) -> dict:
 
 def read_file_citations(repo: str, rev: str, adr_dir: str) -> dict:
     """path -> set of ADR ids named anywhere in that file's text at rev (outside the ADR dir)."""
-    proc = subprocess.run(
-        ["git", "-C", repo, "grep", "-I", "-o", "-E", r"ADR-[0-9]{3,5}", rev, "--", ".", f":!{adr_dir}"],
-        capture_output=True, text=True, encoding="utf-8", errors="replace",
+    # -o keeps the matched ADR number. With -z each result is
+    # REV:path<NUL>ADR-nnnn<LF>, not one ordinary text line per path.
+    raw = _git_bytes(
+        repo, "grep", "-I", "-o", "-z", "-E", "--no-line-number", "--no-column",
+        "--no-heading", "--no-break", "--color=never", r"ADR-[0-9]{3,5}",
+        rev, "--", ".", f":!{adr_dir}", check=False,
     )
     cites: dict = {}
-    prefix = rev + ":"
-    for line in proc.stdout.split("\n"):
-        if not line.startswith(prefix):
-            continue
-        path, _, match = line[len(prefix):].rpartition(":")
-        if path:
-            cites.setdefault(path, set()).add(adr_id(match[4:]))
+    prefix = (rev + ":").encode("utf-8")
+    start = 0
+    while start < len(raw):
+        nul = raw.index(b"\0", start)
+        end = raw.index(b"\n", nul + 1)
+        name, match = raw[start:nul], raw[nul + 1:end]
+        if name.startswith(prefix):
+            path = _path_text(name[len(prefix):])
+            if path is not None:
+                cites.setdefault(path, set()).add(adr_id(match[4:]))
+        start = end + 1
     return cites
 
 
