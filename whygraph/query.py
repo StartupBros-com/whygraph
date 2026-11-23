@@ -32,6 +32,10 @@ def path_tokens(path: str) -> set:
     return {t for t in re.split(r"[^A-Za-z0-9]+", path.lower()) if len(t) > 2}
 
 
+def _folder(path: str) -> str:
+    """Return the original slash-delimited prefix; graph paths are not normalized."""
+    return path.rsplit("/", 1)[0] if "/" in path else ""
+
 class NotFound(Exception):
     """Raised with a message that tells the caller how to fix the request."""
 
@@ -107,7 +111,7 @@ class WhyGraph:
                 "MATCH (f:File) OPTIONAL MATCH (f)<-[:TOUCHES]-(c:Commit) RETURN f.path AS p, count(c) AS n")}
             dirs: dict = {}
             for p in touches:
-                dirs.setdefault(p.rsplit("/", 1)[0] if "/" in p else "", []).append(p)
+                dirs.setdefault(_folder(p), []).append(p)
             self._fi = (touches, dirs, {p: path_tokens(p) for p in touches})
         return self._fi
 
@@ -115,7 +119,7 @@ class WhyGraph:
         """Same-folder files (busiest first) and files with similar path words: the signals
         that still work for a file the history has not seen change with anything."""
         touches, dirs, tok = self._file_index()
-        same = sorted((p for p in dirs.get(path.rsplit("/", 1)[0] if "/" in path else "", []) if p != path),
+        same = sorted((p for p in dirs.get(_folder(path), []) if p != path),
                       key=lambda p: (-touches[p], p))[:limit]
         ta = tok.get(path) or path_tokens(path)
         similar = sorted((p for p in tok if p != path),
@@ -146,7 +150,7 @@ class WhyGraph:
                       "RETURN p.name AS person, collect(c.ts) AS tss", {"p": path})
         scope = "file"
         if not rows:
-            folder = path.rsplit("/", 1)[0] if "/" in path else ""
+            folder = _folder(path)
             rows = self.q("MATCH (p:Person)-[:AUTHORED]->(c:Commit)-[:TOUCHES]->(f:File) "
                           "WHERE f.path STARTS WITH $d RETURN p.name AS person, collect(c.ts) AS tss",
                           {"d": folder + "/"})
@@ -167,7 +171,7 @@ class WhyGraph:
         if not rows:
             rows = self.q("MATCH (p:Person)-[:AUTHORED]->(c:Commit)-[:TOUCHES]->(f:File) WHERE f.path STARTS WITH $d "
                           "RETURN p.name AS person, max(c.ts) AS last_ts ORDER BY last_ts DESC, person LIMIT $n",
-                          {"d": (path.rsplit("/", 1)[0] if "/" in path else "") + "/", "n": limit})
+                          {"d": _folder(path) + "/", "n": limit})
         return rows
 
     # ---- decisions -----------------------------------------------------------------
