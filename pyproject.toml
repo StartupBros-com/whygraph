@@ -5,7 +5,7 @@ description = "A decision graph for coding agents: why a file is the way it is, 
 readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.9"
-dependencies = ["relate-db>=1.1.0"]
+dependencies = ["relate-db>=1.2.0"]
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
