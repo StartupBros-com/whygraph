@@ -80,16 +80,20 @@ def render_list(rows):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="whygraph", description="A decision graph for coding agents, stored in a Relate graph.")
     ap.add_argument("--version", action="version", version=f"whygraph {__version__}")
-    ap.add_argument("--store", default=os.environ.get("WHYGRAPH_STORE", DEFAULT_STORE),
-                    help="path to the .rl store (env WHYGRAPH_STORE; default ./whygraph.rl)")
-    ap.add_argument("--json", action="store_true", help="always print JSON (default when stdout is not a terminal)")
-    ap.add_argument("--text", action="store_true", help="always print the readable digest, even when piped")
-    ap.add_argument("--limit", type=int, default=6, help="rows per list (default 6)")
-    common = argparse.ArgumentParser(add_help=False)  # same flags are accepted after the subcommand
-    common.add_argument("--store", default=argparse.SUPPRESS, help=argparse.SUPPRESS)
-    common.add_argument("--json", action="store_true", default=argparse.SUPPRESS, help=argparse.SUPPRESS)
-    common.add_argument("--text", action="store_true", default=argparse.SUPPRESS, help=argparse.SUPPRESS)
-    common.add_argument("--limit", type=int, default=argparse.SUPPRESS, help=argparse.SUPPRESS)
+    common = argparse.ArgumentParser(add_help=False)
+
+    def add_common(flag, *, default, help_text, **kwargs):
+        ap.add_argument(flag, default=default, help=help_text, **kwargs)
+        # Omitted subcommand options must not overwrite values set before it.
+        common.add_argument(flag, default=argparse.SUPPRESS, help=argparse.SUPPRESS, **kwargs)
+
+    add_common("--store", default=os.environ.get("WHYGRAPH_STORE", DEFAULT_STORE),
+               help_text="path to the .rl store (env WHYGRAPH_STORE; default ./whygraph.rl)")
+    add_common("--json", action="store_true", default=False,
+               help_text="always print JSON (default when stdout is not a terminal)")
+    add_common("--text", action="store_true", default=False,
+               help_text="always print the readable digest, even when piped")
+    add_common("--limit", type=int, default=6, help_text="rows per list (default 6)")
     sub = ap.add_subparsers(dest="cmd", required=True)
     p = sub.add_parser("index", parents=[common], help="build a store from a git repository")
     p.add_argument("--repo", required=True)
