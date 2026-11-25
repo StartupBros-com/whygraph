@@ -15,6 +15,10 @@ from .query import NotFound, WhyGraph
 
 PROTOCOL = "2024-11-05"
 
+_SEARCH_DECISIONS_LIMIT = 6
+_CHANGES_WITH_LIMIT = 10
+_FIND_FILE_LIMIT = 10
+
 TOOLS = [
     {"name": "why_file",
      "description": "Call BEFORE editing a file. Returns the architecture decisions (ADRs) that govern it with the "
@@ -25,16 +29,16 @@ TOOLS = [
      "inputSchema": {"type": "object", "properties": {"id": {"type": "string", "description": "ADR-0118 or 118"}}, "required": ["id"]}},
     {"name": "search_decisions",
      "description": "Full-text search over ADR titles and summaries. Use when you know the topic but not the ADR number.",
-     "inputSchema": {"type": "object", "properties": {"text": {"type": "string"}, "limit": {"type": "integer", "default": 6}}, "required": ["text"]}},
+     "inputSchema": {"type": "object", "properties": {"text": {"type": "string"}, "limit": {"type": "integer", "default": _SEARCH_DECISIONS_LIMIT}}, "required": ["text"]}},
     {"name": "who_owns",
      "description": "People ranked by recency-weighted commits touching a file (folder level if the file is new).",
      "inputSchema": {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"]}},
     {"name": "changes_with",
      "description": "Files that usually change together with this one, each with the signals that support it.",
-     "inputSchema": {"type": "object", "properties": {"path": {"type": "string"}, "limit": {"type": "integer", "default": 10}}, "required": ["path"]}},
+     "inputSchema": {"type": "object", "properties": {"path": {"type": "string"}, "limit": {"type": "integer", "default": _CHANGES_WITH_LIMIT}}, "required": ["path"]}},
     {"name": "find_file",
      "description": "Find files in the graph by path fragment, busiest first.",
-     "inputSchema": {"type": "object", "properties": {"fragment": {"type": "string"}, "limit": {"type": "integer", "default": 10}}, "required": ["fragment"]}},
+     "inputSchema": {"type": "object", "properties": {"fragment": {"type": "string"}, "limit": {"type": "integer", "default": _FIND_FILE_LIMIT}}, "required": ["fragment"]}},
 ]
 
 
@@ -44,13 +48,13 @@ def call_tool(w: WhyGraph, name: str, args: dict):
     if name == "get_decision":
         return w.decision(str(args["id"]))
     if name == "search_decisions":
-        return w.search(args["text"], int(args.get("limit", 6)))
+        return w.search(args["text"], int(args.get("limit", _SEARCH_DECISIONS_LIMIT)))
     if name == "who_owns":
         return w.owners(w.resolve_file(args["path"]), 5)
     if name == "changes_with":
-        return w.changes_with(w.resolve_file(args["path"]), int(args.get("limit", 10)))
+        return w.changes_with(w.resolve_file(args["path"]), int(args.get("limit", _CHANGES_WITH_LIMIT)))
     if name == "find_file":
-        return w.find(args["fragment"], int(args.get("limit", 10)))
+        return w.find(args["fragment"], int(args.get("limit", _FIND_FILE_LIMIT)))
     raise KeyError(name)
 
 
